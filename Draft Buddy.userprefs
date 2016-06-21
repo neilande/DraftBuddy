@@ -1,0 +1,20 @@
+﻿<Properties StartupItem="Assembly-CSharp.csproj">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/DraftBuddy/Services/ICardRepository.cs">
+    <Files>
+      <File FileName="Assets/Scripts/DraftBuddy/Services/JsonCardRepository.cs" Line="5" Column="27" />
+      <File FileName="Assets/Scripts/DraftBuddy/Services/ICardRepository.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/DraftBuddy/Services/ICardImageRepository.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/DraftBuddy/Models/Card.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/DraftBuddy/Models/CardSet.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/Tests/Services/JsonCardRepositoryTest.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/DraftBuddy/UI/CardController.cs" Line="19" Column="4" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore>
+      <Breakpoint file="/Users/Neil/dev/unityTutorials/Draft Buddy/Assets/Scripts/DraftBuddy/Services/JsonCardRepository.cs" line="17" column="1" />
+    </BreakpointStore>
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+</Properties>
