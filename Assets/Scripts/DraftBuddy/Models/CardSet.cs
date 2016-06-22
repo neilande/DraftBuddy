@@ -37,6 +37,9 @@ namespace DraftBuddy.Models
 			get{ return setName; }
 		}
 
+		public String ImageRoot {
+			get{ return imageRoot; }
+		}
 
 
 

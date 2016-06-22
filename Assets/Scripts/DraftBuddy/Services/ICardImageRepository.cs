@@ -6,7 +6,9 @@ namespace DraftBuddy.Services
 {
 	public interface ICardImageRepository
 	{
-		Sprite getNewCardSprite(Card c);
+		Sprite getCardFrontSprite(Card c);
+
+		Sprite getCardBackSprite(Card c);
 	}
 }
 

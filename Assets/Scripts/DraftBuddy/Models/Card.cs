@@ -13,6 +13,8 @@ namespace DraftBuddy.Models
 
 		private Boolean isDfc;
 
+		private String imageRoot;
+
 		[SerializeField]
 		private String frontImagePath;
 
@@ -51,6 +53,7 @@ namespace DraftBuddy.Models
 		public void setParent(CardSet parent)
 		{
 			setValue = parent.SetName;
+			imageRoot = parent.ImageRoot;
 		}
 
 		public int SetNumber{
@@ -66,11 +69,11 @@ namespace DraftBuddy.Models
 		}
 
 		public String FrontImagePath {
-			get{ return frontImagePath; }
+			get{ return imageRoot + frontImagePath; }
 		}
 
 		public String BackImagePath{
-			get{ return backImagePath; }
+			get{ return imageRoot + backImagePath; }
 		}
 	}
 }

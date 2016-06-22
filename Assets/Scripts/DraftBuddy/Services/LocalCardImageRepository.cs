@@ -2,34 +2,43 @@
 using System.Collections;
 using UnityEngine;
 using DraftBuddy.Models;
+using System.IO;
+
 
 //TODO:  want to use sprite textures instead of giant sprites
 namespace DraftBuddy.Services
 {
 	public class LocalCardImageRepository : ICardImageRepository
 	{
-		public Hashtable loadedImages;
+		public Hashtable loadedTextures;
 
 		public LocalCardImageRepository ()
 		{			
-			loadedImages = new Hashtable ();
+			loadedTextures = new Hashtable ();
 		}
 
-		public Sprite getNewCardSprite(Card c)
+		public Sprite getCardFrontSprite(Card c)
 		{
-			Texture2D texture = getCardTexture (c);
-			Sprite newSprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0, 0), 1.00f);
-			return newSprite;
+			return Resources.Load<Sprite> (c.FrontImagePath);
 		}
 
-		private Texture2D getCardTexture(Card c){
-			if (loadedImages [c] == null) {
-				
-				//byte[] fileData = FileStyleUriP
+		public Sprite getCardBackSprite(Card c)
+		{
+			return Resources.Load<Sprite> (c.BackImagePath);
+		}
 
-
+		private Texture2D getCardTexture(String imagePath){
+			if (loadedTextures [imagePath] == null) {
+				String filePath = Application.dataPath + "/" + imagePath;
+				if (!File.Exists (filePath)) {
+					return null;
+				}
+				byte[] fileData = File.ReadAllBytes (filePath);
+				Texture2D tex = new Texture2D (2, 2);
+				tex.LoadImage (fileData);
+				loadedTextures.Add (imagePath, tex);
 			}
-			return (Texture2D)loadedImages [c];
+			return (Texture2D)loadedTextures [imagePath];
 		}
 
 
