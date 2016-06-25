@@ -75,6 +75,7 @@ namespace DraftBuddy.Models
 		public String BackImagePath{
 			get{ return imageRoot + backImagePath; }
 		}
+			
 	}
 }
 

@@ -47,11 +47,13 @@
   <ItemGroup>
      <Compile Include="Assets\Scripts\DraftBuddy\Models\Card.cs" />
      <Compile Include="Assets\Scripts\DraftBuddy\Models\CardSet.cs" />
+     <Compile Include="Assets\Scripts\DraftBuddy\Models\Pack.cs" />
      <Compile Include="Assets\Scripts\DraftBuddy\Services\ICardImageRepository.cs" />
      <Compile Include="Assets\Scripts\DraftBuddy\Services\ICardRepository.cs" />
      <Compile Include="Assets\Scripts\DraftBuddy\Services\JsonCardRepository.cs" />
      <Compile Include="Assets\Scripts\DraftBuddy\Services\LocalCardImageRepository.cs" />
      <Compile Include="Assets\Scripts\DraftBuddy\UI\CardController.cs" />
+     <Compile Include="Assets\Scripts\DraftBuddy\UI\PackController.cs" />
      <Compile Include="Assets\Scripts\Tests\Services\JsonCardRepositoryTest.cs" />
  <Reference Include="UnityEngine.UI">
  <HintPath>/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
