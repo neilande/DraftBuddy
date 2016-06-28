@@ -41,6 +41,7 @@ namespace DraftBuddy.UI
 			cardObjects = new ArrayList ();
 			Pack tempPack = new Pack ("SOI", cardList);
 			setPack (tempPack);
+			positionAndScaleCards();
 
 		
 		}
@@ -50,35 +51,43 @@ namespace DraftBuddy.UI
 		
 		}
 
-		public void setPack(Pack pack)
+		public void positionAndScaleCards()
 		{
+			if (cardObjects.Count == 0) {
+				return;
+			}
+			GameObject firstCard = (GameObject)cardObjects [0];
 			float worldSpaceWidth = topRight.x - lowerLeft.x;
 			float worldSpaceHeight = topRight.y - lowerLeft.y;
 			Vector2 spaceAvailable = new Vector2 (worldSpaceWidth - worldSpaceWidth * cameraBufferPct.x * 2, worldSpaceHeight - worldSpaceHeight * cameraBufferPct.y * 2);
 
+			CardController cardController = firstCard.GetComponent<CardController> ();
 
-			GameObject cardPrefab = (GameObject) Instantiate(Resources.Load("Prefabs/CardRenderer"));
-			CardController cardPrefabController = cardPrefab.GetComponent<CardController> ();
-
-			Bounds cardBounds = cardPrefabController.getWorldBounds ();
+			Bounds cardBounds = cardController.getWorldBounds ();
 			float scaleX = ((spaceAvailable.x / (float)cardsPerRow) - worldSpaceWidth * minCardDistancePct.x) / Mathf.Abs(cardBounds.max.x - cardBounds.min.x);
 			float scaleY = ((spaceAvailable.y / (float)rows) - worldSpaceHeight * minCardDistancePct.y) / Mathf.Abs(cardBounds.max.y - cardBounds.min.y);
 			float cardScale = Mathf.Min (scaleX, scaleY);
 			Vector2 cardDimensions = new Vector2 (Mathf.Abs (cardBounds.max.x - cardBounds.min.x), Mathf.Abs (cardBounds.max.y - cardBounds.min.y)) * cardScale;
-			Vector3 transformScale = cardPrefab.transform.localScale * cardScale;
+			Vector3 transformScale = firstCard.transform.localScale * cardScale;
 
-
-			for(int i = 0; i < pack.setNumbers.Count; i++) {
+			for (int i = 0; i < cardObjects.Count; i++)
+			{
 				int r = (i) / cardsPerRow;
 				int c = i % cardsPerRow;
+				GameObject card = (GameObject) cardObjects [i];
+				card.transform.localScale = transformScale;
+				card.transform.localPosition = new Vector3 (lowerLeft.x + worldSpaceWidth * cameraBufferPct.x + cardDimensions.x / 2.0f + c * spaceAvailable.x / cardsPerRow,
+					topRight.y - (worldSpaceHeight * cameraBufferPct.y + cardDimensions.y / 2.0f + r * spaceAvailable.y / rows));	
+			}
+		}
 
+		public void setPack(Pack pack)
+		{
+			GameObject cardPrefab = (GameObject) Instantiate(Resources.Load("Prefabs/CardRenderer"));
+			for(int i = 0; i < pack.setNumbers.Count; i++) {
 				//create prefab
 				GameObject card = (GameObject) Instantiate(cardPrefab);
 				card.transform.parent = gameObject.transform;
-				card.transform.localScale = transformScale;
-				card.transform.localPosition = new Vector3 (lowerLeft.x + worldSpaceWidth * cameraBufferPct.x + cardDimensions.x / 2.0f + c * spaceAvailable.x / cardsPerRow,
-					topRight.y - (worldSpaceHeight * cameraBufferPct.y + cardDimensions.y / 2.0f + r * spaceAvailable.y / rows));
-
 				card.name = "Card " + i;
 
 				//set card
@@ -89,7 +98,5 @@ namespace DraftBuddy.UI
 
 			Destroy (cardPrefab);
 		}
-
-
 	}
 }
