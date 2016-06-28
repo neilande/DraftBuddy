@@ -16,9 +16,7 @@ namespace DraftBuddy.UI{
 
 		// Use this for initialization
 		void Start () {
-			//TODO:  DI & remove everything below
-			cardRepository = new JsonCardRepository();
-			cardImageRepository = new LocalCardImageRepository ();
+			
 
 //			card = cardRepository.getCard (set, setNumber);
 //			frontSprite = cardImageRepository.getCardFrontSprite (card);
@@ -30,15 +28,20 @@ namespace DraftBuddy.UI{
 //
 //			frontSprite = frontRenderer.sprite;
 
-			Bounds temp = getWorldBounds ();
-			int a = 1;
 
+		}
+
+		void Awake() {
+			//TODO:  DI & remove everything below
+			cardRepository = new JsonCardRepository();
+			cardImageRepository = new LocalCardImageRepository ();
 		}
 
 		public Bounds getWorldBounds()
 		{
 			Bounds localBounds = gameObject.GetComponent<SpriteRenderer>().sprite.bounds;
-			Bounds worldBounds = new Bounds (gameObject.transform.TransformPoint (localBounds.center), gameObject.transform.TransformPoint (localBounds.size) ); 
+			//add in transform
+			Bounds worldBounds = new Bounds (gameObject.transform.TransformPoint (localBounds.center), Vector3.Scale(gameObject.transform.localScale, localBounds.size)); 
 			return worldBounds;
 		}
 

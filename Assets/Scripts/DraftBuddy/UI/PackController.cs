@@ -7,13 +7,19 @@ namespace DraftBuddy.UI
 
 		[SerializeField]
 		private Vector2 cameraBufferPct;
+
 		[SerializeField]
-		private int cardsPerRow = 8;
+		private Vector2 minCardDistancePct;
+
 		[SerializeField]
-		private int rows = 2;
+		private int cardsPerRow = 5;
+		[SerializeField]
+		private int rows = 3;
 
 		private Vector3 lowerLeft;
 		private Vector3 topRight;
+
+		private ArrayList cardObjects;
 
 		// Use this for initialization
 		void Start () {
@@ -22,11 +28,19 @@ namespace DraftBuddy.UI
 			cardList.Add (3);
 			cardList.Add (4);
 			cardList.Add (5);
-			Pack tempPack = new Pack ("SOI", cardList);
-			setPack (tempPack);
+			cardList.Add (1);
+			cardList.Add (2);
+			cardList.Add (3);
+			cardList.Add (4);
+			cardList.Add (1);
 
 			lowerLeft = Camera.main.ScreenToWorldPoint (new Vector3 (0, 0, 0));
 			topRight = Camera.main.ScreenToWorldPoint (new Vector3 (Screen.width, Screen.height, 0));
+			//lowerLeft.y = (lowerLeft.y + topRight.y) / 2;
+
+			cardObjects = new ArrayList ();
+			Pack tempPack = new Pack ("SOI", cardList);
+			setPack (tempPack);
 
 		
 		}
@@ -42,30 +56,38 @@ namespace DraftBuddy.UI
 			float worldSpaceHeight = topRight.y - lowerLeft.y;
 			Vector2 spaceAvailable = new Vector2 (worldSpaceWidth - worldSpaceWidth * cameraBufferPct.x * 2, worldSpaceHeight - worldSpaceHeight * cameraBufferPct.y * 2);
 
-			//TODO:  figure out transform scaling
-			//float scaleX = 
-			//float scaleY
-			GameObject cardPrefab = (GameObject) Instantiate(Resources.Load("Prefabs/CardRenderer"));
-			CardController cardController = cardPrefab.GetComponent<CardController> ();
 
+			GameObject cardPrefab = (GameObject) Instantiate(Resources.Load("Prefabs/CardRenderer"));
+			CardController cardPrefabController = cardPrefab.GetComponent<CardController> ();
+
+			Bounds cardBounds = cardPrefabController.getWorldBounds ();
+			float scaleX = ((spaceAvailable.x / (float)cardsPerRow) - worldSpaceWidth * minCardDistancePct.x) / Mathf.Abs(cardBounds.max.x - cardBounds.min.x);
+			float scaleY = ((spaceAvailable.y / (float)rows) - worldSpaceHeight * minCardDistancePct.y) / Mathf.Abs(cardBounds.max.y - cardBounds.min.y);
+			float cardScale = Mathf.Min (scaleX, scaleY);
+			Vector2 cardDimensions = new Vector2 (Mathf.Abs (cardBounds.max.x - cardBounds.min.x), Mathf.Abs (cardBounds.max.y - cardBounds.min.y)) * cardScale;
+			Vector3 transformScale = cardPrefab.transform.localScale * cardScale;
 
 
 			for(int i = 0; i < pack.setNumbers.Count; i++) {
-				int r = (i + 1) / cardsPerRow;
+				int r = (i) / cardsPerRow;
 				int c = i % cardsPerRow;
 
 				//create prefab
 				GameObject card = (GameObject) Instantiate(cardPrefab);
 				card.transform.parent = gameObject.transform;
+				card.transform.localScale = transformScale;
+				card.transform.localPosition = new Vector3 (lowerLeft.x + worldSpaceWidth * cameraBufferPct.x + cardDimensions.x / 2.0f + c * spaceAvailable.x / cardsPerRow,
+					topRight.y - (worldSpaceHeight * cameraBufferPct.y + cardDimensions.y / 2.0f + r * spaceAvailable.y / rows));
 
-				//gameObject.AddComponent (card);
+				card.name = "Card " + i;
 
-				//CardController newCard = new CardController ();
-				//newCard.setCard(pack.setValue, pack.setNumbers[i]);
-
-				//set position of cardController
-
+				//set card
+				CardController cardController = card.GetComponent<CardController>();
+				cardController.setCard (pack.setValue, (int)pack.setNumbers[i]);
+				cardObjects.Add (card);
 			}
+
+			Destroy (cardPrefab);
 		}
 
 
